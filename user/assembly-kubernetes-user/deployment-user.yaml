@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: assignment-user
+  labels:
+    app: assignment-user
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: assignment-user
+  template:
+    metadata:
+      labels:
+        app: assignment-user
+    spec:
+      containers:
+      - name: assignment-user
+        image: 230119/user:assignment-2
+        ports:
+        - containerPort: 8080 #port container exposed
+        env:
+        - name: db_url
+          valueFrom:
+            configMapKeyRef:
+              name: user-config-map
+              key: DB_URL
+        - name: db_username
+          valueFrom:
+            configMapKeyRef:
+              name: user-config-map
+              key: DB_USERNAME
+        - name: db_password
+          valueFrom:
+            secretKeyRef:
+              name: mysql-creds
+              key: password
+        - name: JAEGER_HOST_URL
+          valueFrom:
+            configMapKeyRef:
+              name: user-config-map
+              key: JAEGER_HOST_URL

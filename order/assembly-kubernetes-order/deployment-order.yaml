@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: assignment-order
+  labels:
+    app: assignment-order
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: assignment-order
+  template:
+    metadata:
+      labels:
+        app: assignment-order
+    spec:
+      containers:
+      - name: assignment-order
+        image: 230119/order:assignment-2
+        ports:
+        - containerPort: 8080 #port container exposed
+        env:
+        - name: JAEGER_HOST_URL
+          valueFrom:
+            configMapKeyRef:
+              name: order-config-map
+              key: JAEGER_HOST_URL

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-config-map
+  namespace: default
+data:
+  JAEGER_HOST_URL: jaeger-agent

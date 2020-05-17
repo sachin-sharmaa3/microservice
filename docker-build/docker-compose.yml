@@ -1,0 +1,59 @@
+version: "3.6"
+services:  
+  jaeger-allinone:
+    image: jaegertracing/all-in-one:1.7
+    ports:
+      - 5775:5775/udp
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 14268:14268
+      - 9411:9411
+    networks:
+      - db_employee-mysql  
+  nagp-order:
+    image: 3147181/order:assignment-2
+    ports:
+      - 8080:8080
+    networks:
+      - db_employee-mysql
+    environment: 
+    - JAEGER_HOST_URL=jaeger-allinone
+    depends_on:
+    - jaeger-allinone
+  nagp-user:
+    image: 3147181/user:assignment-2
+    ports:
+      - 8081:8081
+    networks:
+      - db_employee-mysql
+    environment: 
+    - JAEGER_HOST_URL=jaeger-allinone
+    - db_url=jdbc:mysql://db:3306/nagp-advanced-microservice-2
+    - db_username=root
+    - db_password=root
+    depends_on:
+    - jaeger-allinone
+  nagp-aggregator:
+    image: 3147181/aggregator:assignment-2
+    ports:
+      - 8082:8082
+    networks:
+      - db_employee-mysql
+    environment: 
+    - JAEGER_HOST_URL=jaeger-allinone
+    - USER_URL=http://nagp-user:8081
+    - ORDER_URL=http://nagp-order:8080
+    depends_on:
+    - jaeger-allinone
+    - nagp-user
+    - nagp-order
+    
+# access external created network
+networks:
+  db_employee-mysql:
+    external: true
+
+# db is running in other docker compose, after setting that we can create our database, and then run this file with same network as db is on to make connection with db
+#db appended with the network name in external network 

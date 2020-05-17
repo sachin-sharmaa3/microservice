@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: assignment-aggregator
+  labels:
+    app: assignment-aggregator
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: assignment-aggregator
+  template:
+    metadata:
+      labels:
+        app: assignment-aggregator
+    spec:
+      containers:
+      - name: assignment-aggregator
+        image: 230119/aggregator:assignment-2
+        ports:
+        - containerPort: 8080 #port container exposed
+        env:
+        - name: ORDER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: aggregator-config-map
+              key: ORDER_URL
+        - name: USER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: aggregator-config-map
+              key: USER_URL
+        - name: JAEGER_HOST_URL
+          valueFrom:
+            configMapKeyRef:
+              name: aggregator-config-map
+              key: JAEGER_HOST_URL
+        

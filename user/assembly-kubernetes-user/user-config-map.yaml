@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-config-map
+  namespace: default
+data:
+  DB_URL: jdbc:mysql://mysql-service:3306/assignment-advanced-microservice-2
+  DB_USERNAME: root
+  JAEGER_HOST_URL: jaeger-agent

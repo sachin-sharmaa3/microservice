@@ -1,0 +1,25 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: assignment-user
+  datasource: 
+    url: ${db_url:jdbc:mysql://localhost:3306/assignment-advanced-microservice-2}
+    username: ${db_username:root}
+    password: ${db_password:root}
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    hibernate: 
+      ddl-auto: update
+    properties: 
+      hibernate: 
+        dialect: org.hibernate.dialect.MySQL5Dialect
+   
+    
+      
+    
+opentracing: 
+  jaeger:
+    udp-sender:
+      host: ${JAEGER_HOST_URL:localhost}
+      port: 6831

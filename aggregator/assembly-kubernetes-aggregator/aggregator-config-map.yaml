@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aggregator-config-map
+  namespace: default
+data:
+  ORDER_URL: http://assignment-order-service
+  USER_URL: http://assignment-user-service
+  JAEGER_HOST_URL: jaeger-agent
